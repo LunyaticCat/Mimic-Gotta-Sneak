@@ -6,37 +6,18 @@ public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D bc;
-    public float speed;
-    public float jump;
+    public BoxCollider2D groundDetector;
+    public float speed = 5;
+    public float jump = 100;
     private float move;
-    public GameObject player;
-    [SerializeField] private LayerMask groundLayerMask;
+    public Animator animator;
+    private bool facingRight = true;
 
     bool grounded = false;
 
     void GroundedUpdater()
     {
-        //Set to false every frame by default
-        RaycastHit2D[] hit;
-        hit = Physics2D.RaycastAll(player.transform.position, Vector2.down, 0.6f, groundLayerMask);
-        // you can increase RaycastLength and adjust direction for your case
-        foreach (var hited in hit)
-        {
-            Debug.Log(hited.collider.gameObject.tag);
-            //if (hited.collider.gameObject == gameObject) //Ignore my character
-            //continue;
-            // Don't forget to add tag to your ground
-            if (hited.collider.gameObject.tag == "Ground")
-            { //Change it to match ground tag
-                Debug.Log("oui");
-                grounded = true;
-            }
-            else
-            {
-                Debug.Log("non");
-                grounded = false;
-            }
-        }
+
     }
 
     void Update()
@@ -44,12 +25,25 @@ public class PlayerControl : MonoBehaviour
         GroundedUpdater();
 
         move = Input.GetAxis("Horizontal");
-
+        Flip(move);
+        animator.SetFloat("Speed", Mathf.Abs(move));
         rb.velocity = new Vector2(move * speed, rb.velocity.y);
-
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetButtonDown("Jump") && groundDetector.IsTouchingLayers())
         {
             rb.AddForce(new Vector2(rb.velocity.x, jump));
         }
     }
+
+    private void Flip(float horizontal)
+    {
+        if (horizontal > 0 && !facingRight || horizontal < 0 && facingRight)
+        {
+            facingRight = !facingRight;
+
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+        }
+    }
+
 }
