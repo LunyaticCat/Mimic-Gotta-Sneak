@@ -12,9 +12,8 @@ public class PlayerControl : MonoBehaviour
     private float move;
     public Animator animator;
     private bool facingRight = true;
-    private bool grounded = false;
     private bool jumpPressed;
-    [SerializeField] private LayerMask groundLayerMask;
+    private bool sneak = false;
 
     void GroundedUpdater()
     {
@@ -43,15 +42,28 @@ public class PlayerControl : MonoBehaviour
         {
             jumpPressed = true;
         }
+        if (Input.GetButtonDown("Vertical") && groundDetector.IsTouchingLayers())
+        {
+            sneak = true;
+        }
+        if (Input.GetButtonUp("Vertical"))
+        {
+            sneak = false;
+        }
         Flip(move);
     }
     void FixedUpdate()
     {
         GroundedUpdater();
         animator.SetFloat("Speed", Mathf.Abs(move));
-        rb.velocity = new Vector2(move * speed, rb.velocity.y);
-        Debug.Log("Jump pressed "+ jumpPressed);
-        Debug.Log("Ground detector " + groundDetector.IsTouchingLayers());
+        animator.SetBool("Sneak", sneak);
+        if (!sneak)
+        {
+            rb.velocity = new Vector2(move * speed, rb.velocity.y);
+        }
+        else { rb.velocity = new Vector2(0, 0); }
+        //Debug.Log("Jump pressed "+ jumpPressed);
+        //Debug.Log("Ground detector " + groundDetector.IsTouchingLayers());
         if (jumpPressed && groundDetector.IsTouchingLayers())
         {
             rb.AddForce(new Vector2(rb.velocity.x, jump));
