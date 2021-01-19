@@ -55,6 +55,7 @@ public class CountdownTimer : MonoBehaviour
         if (currentTime<=0.0)
         {
             gameOver();
+            timer.text = "00:00\nTIMES UP !";
             enabled = false;
         }
     }
@@ -64,7 +65,6 @@ public class CountdownTimer : MonoBehaviour
         timer.color=Color.red;
         timer.fontSize = 250;
         timer.transform.Translate( 787, -365.78f, 0);
-        timer.text = "00:00\nTIMES UP !";
         timer.alignment = TextAnchor.MiddleCenter;
         quitButton.gameObject.SetActive(true);
         reloadButton.gameObject.SetActive(true);
