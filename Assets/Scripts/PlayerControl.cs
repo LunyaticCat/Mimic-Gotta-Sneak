@@ -25,11 +25,17 @@ public class PlayerControl : MonoBehaviour
 
         if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
         {
-            GetComponent<Light>().range = 3;
+            if (GetComponent<Light>().range >= 25)
+            {
+                GetComponent<Light>().range--;
+            }
         }
         else
         {
-            GetComponent<Light>().range = 5;
+            if (GetComponent<Light>().range <= 100)
+            {
+                GetComponent<Light>().range++;
+            }
         }
 
         move = Input.GetAxis("Horizontal");
