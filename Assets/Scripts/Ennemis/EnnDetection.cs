@@ -11,7 +11,7 @@ public class EnnDetection : MonoBehaviour
     private GameObject _mimic;
     private EnnMovement _ennMovement;
     private float _playerEnemyDistance;
-    private bool _playerAtRight = true;
+    private bool _playerAtLeft = true;
     private bool _playerInView = false;
 
     // Start is called before the first frame update
@@ -27,12 +27,12 @@ public class EnnDetection : MonoBehaviour
         if (transform.position.x - _mimic.transform.position.x < 0)
         {
             _playerEnemyDistance = Math.Abs(transform.position.x - _mimic.transform.position.x);
-            _playerAtRight = false;
+            _playerAtLeft = false;
         }
         else
         {
             _playerEnemyDistance = transform.position.x - _mimic.transform.position.x;
-            _playerAtRight = true;
+            _playerAtLeft = true;
         }
 
         if (inViewField())
@@ -57,7 +57,7 @@ public class EnnDetection : MonoBehaviour
     {
         if (_playerEnemyDistance < viewDistance)
         {
-            return _ennMovement.GETFaceLeft() && _playerAtRight || !_ennMovement.GETFaceLeft() && !_playerAtRight;
+            return _ennMovement.GETFaceLeft() && !_playerAtLeft || !_ennMovement.GETFaceLeft() && _playerAtLeft;
         }
 
         return false;
