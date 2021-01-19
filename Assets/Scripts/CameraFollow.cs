@@ -11,12 +11,17 @@ public class CameraFollow : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 finalPostion;
-        if(following.position.x>5 && following.position.y>2 && following.position.x<1995){
+        if(following.position.x>5  && following.position.x<1995){
             finalPostion = following.position + offset;
         }
         else
         {
             finalPostion = new Vector3(5, following.position.y, following.position.z) + offset;
+        }
+
+        if (following.position.y<2)
+        {
+            finalPostion.y = offset.y;
         }
         
         transform.position = Vector3.Lerp(transform.position, finalPostion, smoothness);
