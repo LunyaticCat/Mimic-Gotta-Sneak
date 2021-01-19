@@ -14,6 +14,13 @@ public class PlayerControl : MonoBehaviour
     private bool facingRight = true;
     private bool jumpPressed;
     private bool sneak = false;
+    private int nbCoins = 0;
+
+    public void addCoin(int n)
+    {
+        nbCoins += n;
+        Debug.Log(nbCoins);
+    }
 
     void GroundedUpdater()
     {
