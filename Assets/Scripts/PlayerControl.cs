@@ -17,12 +17,20 @@ public class PlayerControl : MonoBehaviour
 
     void GroundedUpdater()
     {
-
     }
 
     void Update()
     {
         GroundedUpdater();
+
+        if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
+        {
+            GetComponent<Light>().range = 3;
+        }
+        else
+        {
+            GetComponent<Light>().range = 5;
+        }
 
         move = Input.GetAxis("Horizontal");
         Flip(move);
@@ -45,5 +53,4 @@ public class PlayerControl : MonoBehaviour
             transform.localScale = theScale;
         }
     }
-
 }
