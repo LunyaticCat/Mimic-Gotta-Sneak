@@ -1,49 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class EnnMovement : MonoBehaviour
-
-
 {
-
     public float speed = 5;
     public GameObject leftBorder;
     public GameObject rightBorder;
-    private float xMax;
-    private float xMin;
-    private bool faceLeft = false;
+    private bool _faceLeft;
+    private float _xMax;
+    private float _xMin;
 
-    void Start()
+    private void Start()
     {
-        xMin = leftBorder.transform.position.x;
-        xMax = rightBorder.transform.position.x;
+        _xMin = leftBorder.transform.position.x;
+        _xMax = rightBorder.transform.position.x;
         leftBorder.GetComponent<Renderer>().enabled = false;
         rightBorder.GetComponent<Renderer>().enabled = false;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         transform.Translate(speed * Time.deltaTime, 0, 0);
-        float xEnn = transform.position.x;
-        if(xEnn < xMin)
+        var xEnn = transform.position.x;
+        if (xEnn < _xMin)
         {
             speed = Math.Abs(speed);
-            if (faceLeft) { 
-                faceLeft = true;
-                transform.Rotate(new Vector3(0, 180, 0));
-            }
-        }
-            
-        if(xEnn > xMax) {
-            speed = -1 * Math.Abs(speed);
-            if (!faceLeft)
+            if (_faceLeft)
             {
-                faceLeft = false;
+                _faceLeft = true;
                 transform.Rotate(new Vector3(0, 180, 0));
             }
         }
+
+        if (xEnn > _xMax)
+        {
+            speed = -1 * Math.Abs(speed);
+            if (!_faceLeft)
+            {
+                _faceLeft = false;
+                transform.Rotate(new Vector3(0, 180, 0));
+            }
+        }
+    }
+
+    public bool GETFaceLeft()
+    {
+        return _faceLeft;
     }
 }
