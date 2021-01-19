@@ -37,9 +37,15 @@ public class EnnDetection : MonoBehaviour
 
         if (inViewField())
         {
-            (Math.PI / 180) * 
-            if (Math.Tan());
-            _playerInView = true;
+            if (Math.Tan(Math.PI / 180 * viewAngle) * _playerEnemyDistance >
+                Math.Abs(transform.position.y - _mimic.transform.position.y))
+            {
+                _playerInView = true;
+            }
+            else
+            {
+                _playerInView = false;
+            }
         }
         else
         {
@@ -47,7 +53,7 @@ public class EnnDetection : MonoBehaviour
         }
     }
 
-    bool inViewField()
+    private bool inViewField()
     {
         if (_playerEnemyDistance < viewDistance)
         {
@@ -57,7 +63,7 @@ public class EnnDetection : MonoBehaviour
         return false;
     }
 
-    bool getPlayerInView()
+    public bool getPlayerInView()
     {
         return _playerInView;
     }

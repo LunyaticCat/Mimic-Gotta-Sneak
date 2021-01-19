@@ -33,7 +33,7 @@ public class EnnMovement : MonoBehaviour
             }
         }
 
-        if (xEnn > _xMax)
+        else if (xEnn > _xMax)
         {
             speed = -1 * Math.Abs(speed);
             if (!_faceLeft)
