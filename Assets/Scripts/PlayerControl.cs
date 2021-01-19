@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,34 +32,51 @@ public class PlayerControl : MonoBehaviour
     {
         move = Input.GetAxis("Horizontal");
 
-        if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
+
+        if (sneak)
         {
-            if (GetComponent<Light>().range >= 25)
+            if (GetComponent<Light>().range != 5)
             {
-                GetComponent<Light>().range--;
+                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) - 1);
+            }
+        }
+        else if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
+        {
+            if (GetComponent<Light>().range < 25)
+            {
+                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) + 1);
+            }
+            else
+            {
+                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) - 1);
             }
         }
         else
         {
-            if (GetComponent<Light>().range <= 100)
+            if (GetComponent<Light>().range != 100)
             {
-                GetComponent<Light>().range++;
+                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) + 1);
             }
         }
+
         if (Input.GetButtonDown("Jump") && groundDetector.IsTouchingLayers())
         {
             jumpPressed = true;
         }
+
         if (Input.GetButtonDown("Vertical") && groundDetector.IsTouchingLayers())
         {
             sneak = true;
         }
+
         if (Input.GetButtonUp("Vertical"))
         {
             sneak = false;
         }
+
         Flip(move);
     }
+
     void FixedUpdate()
     {
         GroundedUpdater();
@@ -68,9 +86,11 @@ public class PlayerControl : MonoBehaviour
         {
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
         }
-        else { rb.velocity = new Vector2(0, 0); }
-        //Debug.Log("Jump pressed "+ jumpPressed);
-        //Debug.Log("Ground detector " + groundDetector.IsTouchingLayers());
+        else
+        {
+            rb.velocity = new Vector2(0, 0);
+        }
+
         if (jumpPressed && groundDetector.IsTouchingLayers())
         {
             rb.AddForce(new Vector2(rb.velocity.x, jump));
