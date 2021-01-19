@@ -13,14 +13,17 @@ public class PlayerControl : MonoBehaviour
     public Animator animator;
     private bool facingRight = true;
     private bool grounded = false;
+    private bool jumpPressed;
+    [SerializeField] private LayerMask groundLayerMask;
 
     void GroundedUpdater()
     {
     }
 
+
     void Update()
     {
-        GroundedUpdater();
+        move = Input.GetAxis("Horizontal");
 
         if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
         {
@@ -36,14 +39,23 @@ public class PlayerControl : MonoBehaviour
                 GetComponent<Light>().range++;
             }
         }
-
-        move = Input.GetAxis("Horizontal");
-        Flip(move);
-        animator.SetFloat("Speed", Mathf.Abs(move));
-        rb.velocity = new Vector2(move * speed, rb.velocity.y);
         if (Input.GetButtonDown("Jump") && groundDetector.IsTouchingLayers())
         {
+            jumpPressed = true;
+        }
+        Flip(move);
+    }
+    void FixedUpdate()
+    {
+        GroundedUpdater();
+        animator.SetFloat("Speed", Mathf.Abs(move));
+        rb.velocity = new Vector2(move * speed, rb.velocity.y);
+        Debug.Log("Jump pressed "+ jumpPressed);
+        Debug.Log("Ground detector " + groundDetector.IsTouchingLayers());
+        if (jumpPressed && groundDetector.IsTouchingLayers())
+        {
             rb.AddForce(new Vector2(rb.velocity.x, jump));
+            jumpPressed = false;
         }
     }
 
