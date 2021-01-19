@@ -17,24 +17,6 @@ public class PlayerControl : MonoBehaviour
 
         rb.velocity = new Vector2(move * speed, rb.velocity.y);
 
-         void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.tag == "Ground")
-            {
-                canJump = false;
-                Debug.Log("can't jump");
-            }
-        }
-
-         void OnCollisionExit(Collision collision)
-        {
-            if (collision.collider.tag == "Ground")
-            {
-                canJump = true;
-                Debug.Log("can jump");
-            }
-        }
-
         if (Input.GetButtonDown("Jump") && canJump)
         {
             rb.AddForce(new Vector2(rb.velocity.x, jump));
