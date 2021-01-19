@@ -6,24 +6,16 @@ public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D bc;
-    public BoxCollider2D groundDetector;
+    public CapsuleCollider2D groundDetector;
     public float speed = 5;
     public float jump = 100;
     private float move;
     public Animator animator;
     private bool facingRight = true;
 
-    bool grounded = false;
-
-    void GroundedUpdater()
-    {
-
-    }
 
     void Update()
     {
-        GroundedUpdater();
-
         move = Input.GetAxis("Horizontal");
         Flip(move);
         animator.SetFloat("Speed", Mathf.Abs(move));
