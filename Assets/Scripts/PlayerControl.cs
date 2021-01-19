@@ -6,23 +6,36 @@ public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D bc;
-    public BoxCollider2D groundDetector;
+    public CapsuleCollider2D groundDetector;
     public float speed = 5;
     public float jump = 100;
     private float move;
     public Animator animator;
     private bool facingRight = true;
-
-    bool grounded = false;
+    private bool grounded = false;
 
     void GroundedUpdater()
     {
-
     }
 
     void Update()
     {
         GroundedUpdater();
+
+        if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
+        {
+            if (GetComponent<Light>().range >= 25)
+            {
+                GetComponent<Light>().range--;
+            }
+        }
+        else
+        {
+            if (GetComponent<Light>().range <= 100)
+            {
+                GetComponent<Light>().range++;
+            }
+        }
 
         move = Input.GetAxis("Horizontal");
         Flip(move);
@@ -45,5 +58,4 @@ public class PlayerControl : MonoBehaviour
             transform.localScale = theScale;
         }
     }
-
 }
