@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 23e3403e838a36041a15c574a745385d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3421d648205bd2c458edb67260ca67b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -170,11 +170,8 @@ MonoBehaviour:
   bc: {fileID: 1932608662892634056}
   groundDetector: {fileID: 6694122327740458404}
   speed: 5
-  jump: 500
+  jump: 600
   animator: {fileID: 1932608662892634061}
-  groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!70 &6694122327740458404
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,16 +8,25 @@ public class CountdownTimer : MonoBehaviour
 
     public float startingTime = 60;
 
+    private String finalString;
+
     public Text timer;
 
     public Button quitButton;
     public Button reloadButton;
+    
+    private Text nbCoin;
+    private GameObject nbCoinGameObject;
+    private PlayerControl player;
     
     // Start is called before the first frame update
     void Start()
     {
         quitButton.gameObject.SetActive(false);
         reloadButton.gameObject.SetActive(false);
+        nbCoinGameObject = GameObject.Find("nbCoinText");
+        nbCoin = nbCoinGameObject.GetComponent<Text>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
         currentTime = startingTime;
     }
 
@@ -54,21 +62,28 @@ public class CountdownTimer : MonoBehaviour
         
         if (currentTime<=0.0)
         {
-            gameOver();
-            timer.text = "00:00\nTIMES UP !";
-            enabled = false;
+            gameOver("00:00\nTIMES UP !");
         }
     }
 
-    private void gameOver()
+    public void gameOver(String finalString)
     {
+        Time.timeScale = 0;
+        enabled = false;
         timer.color=Color.red;
+        nbCoin.color=Color.red;
         timer.fontSize = 250;
-        timer.transform.Translate( 787, -365.78f, 0);
+        nbCoin.fontSize = 200;
+        timer.text = finalString;
+        int finalScore = (int) (player.getCoin() * currentTime);
+
+        nbCoin.text = "Score: " + finalScore;
+        nbCoin.transform.position = new Vector3(960, 860, 0);
+        timer.transform.position = new Vector3(960, 600, 0);
+        nbCoin.alignment = TextAnchor.MiddleCenter;
         timer.alignment = TextAnchor.MiddleCenter;
         quitButton.gameObject.SetActive(true);
         reloadButton.gameObject.SetActive(true);
-        Time.timeScale = 0;
         
     }
 }
