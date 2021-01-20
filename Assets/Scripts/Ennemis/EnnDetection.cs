@@ -10,15 +10,18 @@ public class EnnDetection : MonoBehaviour
     public float viewAngle = 30;
     private GameObject _mimic;
     private EnnMovement _ennMovement;
+    private PlayerControl _playerMovement;
     private float _playerEnemyDistance;
-    private bool _playerAtLeft = true;
-    private bool _playerInView = false;
+    private bool _playerAtLeft;
+    private bool _playerInView;
 
     // Start is called before the first frame update
     void Start()
     {
         _mimic = GameObject.FindGameObjectWithTag("Player");
         _ennMovement = GetComponent<EnnMovement>();
+        _playerMovement = _mimic.GetComponent<PlayerControl>();
+        _playerInView = false;
     }
 
 // Update is called once per frame
@@ -40,7 +43,13 @@ public class EnnDetection : MonoBehaviour
             if (Math.Tan(Math.PI / 180 * viewAngle) * _playerEnemyDistance >
                 Math.Abs(transform.position.y - _mimic.transform.position.y))
             {
-                _playerInView = true;
+                if (!_playerInView)
+                {
+                    if (!_playerMovement.GETSneak())
+                    {
+                        _playerInView = true;
+                    }
+                }
             }
             else
             {
@@ -51,20 +60,19 @@ public class EnnDetection : MonoBehaviour
         {
             _playerInView = false;
         }
+
+        if (_playerInView) _ennMovement.enablePursuit(_playerAtLeft);
+        else _ennMovement.disablePursuit();
     }
 
     private bool inViewField()
     {
         if (_playerEnemyDistance < viewDistance)
         {
-            return _ennMovement.GETFaceLeft() && !_playerAtLeft || !_ennMovement.GETFaceLeft() && _playerAtLeft;
+            return _ennMovement.GETFaceLeft() && _playerAtLeft ||
+                   !_ennMovement.GETFaceLeft() && !_playerAtLeft;
         }
 
         return false;
-    }
-
-    public bool getPlayerInView()
-    {
-        return _playerInView;
     }
 }

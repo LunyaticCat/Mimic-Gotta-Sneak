@@ -10,17 +10,16 @@ public class PlayerControl : MonoBehaviour
     public CapsuleCollider2D groundDetector;
     public float speed = 5;
     public float jump = 100;
+    public bool sneak = false;
     private float move;
     public Animator animator;
     private bool facingRight = true;
     private bool jumpPressed;
-    private bool sneak = false;
     private int nbCoins = 0;
 
     public void addCoin(int n)
     {
         nbCoins += n;
-        Debug.Log(nbCoins);
     }
 
     void GroundedUpdater()
@@ -28,34 +27,42 @@ public class PlayerControl : MonoBehaviour
     }
 
 
+    private void Start()
+    {
+        Physics2D.IgnoreLayerCollision(6, 8, true);
+    }
+
     void Update()
     {
         move = Input.GetAxis("Horizontal");
 
-
         if (sneak)
         {
-            if (GetComponent<Light>().range != 5)
+            if (GetComponentInChildren<Light>().range != 5)
             {
-                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) - 1);
+                GetComponentInChildren<Light>().range =
+                    Convert.ToSingle(Math.Round(GetComponentInChildren<Light>().range) - 1);
             }
         }
         else if (rb.velocity[0] <= 1 && rb.velocity[0] >= -1 && rb.velocity[1] >= -1 && rb.velocity[1] <= 1)
         {
-            if (GetComponent<Light>().range < 25)
+            if (GetComponentInChildren<Light>().range < 25)
             {
-                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) + 1);
+                GetComponentInChildren<Light>().range =
+                    Convert.ToSingle(Math.Round(GetComponentInChildren<Light>().range) + 1);
             }
             else
             {
-                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) - 1);
+                GetComponentInChildren<Light>().range =
+                    Convert.ToSingle(Math.Round(GetComponentInChildren<Light>().range) - 1);
             }
         }
         else
         {
-            if (GetComponent<Light>().range != 100)
+            if (GetComponentInChildren<Light>().range != 100)
             {
-                GetComponent<Light>().range = Convert.ToSingle(Math.Round(GetComponent<Light>().range) + 1);
+                GetComponentInChildren<Light>().range =
+                    Convert.ToSingle(Math.Round(GetComponentInChildren<Light>().range) + 1);
             }
         }
 
@@ -108,5 +115,10 @@ public class PlayerControl : MonoBehaviour
             theScale.x *= -1;
             transform.localScale = theScale;
         }
+    }
+
+    public bool GETSneak()
+    {
+        return sneak;
     }
 }
